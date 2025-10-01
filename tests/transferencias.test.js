@@ -1,8 +1,7 @@
 import http from 'k6/http';
 import { sleep,check  } from 'k6';
 import { obterToken } from '../helpers/autenticacao.js';
-
-
+import { pegarBaseURL } from '../utils/variaveis.js';
 
 export const options = {
   iterations: 1
@@ -11,9 +10,9 @@ export const options = {
 export default function () {
   const token = obterToken();
 
-  const url = 'http://localhost:3000/transferencias';
+  const url =  pegarBaseURL() + '/transferencias';
   const payload = JSON.stringify({
-    contaOrigim: 1,
+    contaOrigem: 1,
     contaDestino: 2,
     valor: 11,
     token: ""
@@ -28,7 +27,7 @@ export default function () {
 
   const res = http.post(url, payload, params);
   check(res, {
-    'Validar que status é 200': (r) => r.status === 201,
+    'Validar que status é 201': (r) => r.status === 201,
 
   })
 
